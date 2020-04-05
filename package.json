@@ -1,0 +1,26 @@
+{
+  "name": "cotter-jwt-js",
+  "version": "0.1.0",
+  "description": "Cotter JWT Handler for decoding and validating jwt tokens",
+  "main": "lib/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/cotterapp/cotter-jwt-js"
+  },
+  "keywords": [
+    "jwt",
+    "react",
+    "react-native",
+    "decode"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "buffer": "^5.5.0",
+    "jwk-to-pem": "^2.0.3"
+  }
+}
