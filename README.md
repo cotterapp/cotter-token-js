@@ -41,7 +41,7 @@ const issuedAt = decodedToken.getIssuedAt();
 const audience = decodedToken.getAudience();
 ```
 
-### Usage with Cotter
+# Usage with Cotter
 
 Cotter returns 2 types of jwt token, `CotterAccessToken` and `CotterIDToken`.
 
