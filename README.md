@@ -64,19 +64,21 @@ console.log(decodedToken.token); // original token string
 `CotterAccessToken` have the following attributes
 
 ```typescript
-client_user_id: string;
-authentication_method: string;
-type: string;
-scope: string;
+interface CotterAccessTokenInterface {
+  client_user_id: string;
+  authentication_method: string;
+  type: string;
+  scope: string;
 
-// standard claims
-aud: string;
-exp: number;
-jti: string;
-iat: number;
-iss: string;
-nbf: number;
-sub: string;
+  // standard claims
+  aud: string;
+  exp: number;
+  jti: string;
+  iat: number;
+  iss: string;
+  nbf: number;
+  sub: string;
+}
 ```
 
 `CotterAccessToken` also extends all the methods available for `CotterJWTToken`.
@@ -100,19 +102,21 @@ console.log(decodedToken.token); // original token string
 `CotterIDToken` have the following attributes
 
 ```typescript
-client_user_id: string; // user id from your server
-auth_time: string; // last authentication time
-identifiers: string[]; // email/phone number
-type: string;
+interface CotterIDTokenInterface {
+  client_user_id: string; // user id from your server
+  auth_time: string; // last authentication time
+  identifiers: string[]; // email/phone number
+  type: string;
 
-// standard claims
-aud: string;
-exp: number;
-jti: string;
-iat: number;
-iss: string;
-nbf: number;
-sub: string;
+  // standard claims
+  aud: string;
+  exp: number;
+  jti: string;
+  iat: number;
+  iss: string;
+  nbf: number;
+  sub: string;
+}
 ```
 
 `CotterIDToken` also extends all the methods available for `CotterJWTToken`.
@@ -300,14 +304,19 @@ A simple example to validate the jwt token:
 ```javascript
 var jwt = require("jsonwebtoken");
 var jwkToPem = require("jwk-to-pem");
+var axios = require("axios");
 
-const publicKeys = await axios.default.get(
-  "https://www.cotter.app/api/v0/token/jwks"
-);
-const jwk = publicKeys.data.keys[0];
-const pem = jwkToPem(jwk);
-jwt.verify(token, pem, { algorithms: ["ES256"] }, function (err, decodedToken) {
-  console.log(err);
-  console.log(decodedToken);
-});
+const validateToken = async (token) => {
+  const publicKeys = await axios.default.get(
+    "https://www.cotter.app/api/v0/token/jwks"
+  );
+  const jwk = publicKeys.data.keys[0];
+  const pem = jwkToPem(jwk);
+  jwt.verify(token, pem, { algorithms: ["ES256"] }, function (err, decodedToken) {
+    console.log(err);
+    console.log(decodedToken);
+  });
+}
+
+validateToken(accessToken); // 👈 pass in access token here
 ```
