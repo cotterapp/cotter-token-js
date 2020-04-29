@@ -2,9 +2,11 @@
   "name": "cotter-token-js",
   "version": "0.1.1",
   "description": "Cotter Tokens and JWT Handler for validating Cotter's responses and validating JWT tokens",
-  "main": "lib/index.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -14,7 +16,8 @@
     "jwt",
     "react",
     "react-native",
-    "decode"
+    "decode",
+    "cotter"
   ],
   "author": "",
   "license": "ISC",
@@ -23,5 +26,11 @@
     "buffer": "^5.6.0",
     "jwk-to-pem": "^2.0.3",
     "tweetnacl": "^1.0.3"
-  }
+  },
+  "devDependencies": {
+    "typescript": "^3.8.3"
+  },
+  "files": [
+    "lib/**/*"
+  ]
 }

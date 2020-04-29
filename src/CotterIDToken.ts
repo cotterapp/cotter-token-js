@@ -1,5 +1,5 @@
-import StandardClaims from './StandardClaims';
-import CotterJwtToken from './CotterJwtToken';
+import StandardClaims from "./StandardClaims";
+import CotterJwtToken from "./CotterJwtToken";
 
 export interface CotterIDTokenInterface extends StandardClaims {
   client_user_id: string;
@@ -9,7 +9,7 @@ export interface CotterIDTokenInterface extends StandardClaims {
 }
 
 export default class CotterIDToken extends CotterJwtToken {
-  payload: CotterIDTokenInterface;
+  payload!: CotterIDTokenInterface;
 
   constructor(token: string) {
     super(token);
