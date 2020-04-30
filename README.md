@@ -323,7 +323,7 @@ validateToken(accessToken); // 👈 pass in access token here
 
 # Validating Cotter's Identity Response
 After verifying user's email or phone number, you receive a [response about the user's identity](https://docs.cotter.app/verify-email-and-phone-number/validating-cotters-token):
-```json
+```javascript
 "token": {
     "identifier_id": "e8a47aff-f520-4b8d-952b-79d36d10fb3e",
     "expire_at": "1588849208",
@@ -346,7 +346,7 @@ var valid = cotterIdentity.validate()
 
 # Validating Cotter's Event Response
 After authenticating a user using Trusted Device or Pin/Biometric, you receive a [response about the authentication event](https://docs.cotter.app/trusted-devices/validating-cotters-event-response):
-```json
+```javascript
 {
   "ID": 1361, // Event ID
   "CreatedAt": "2020-02-27T22:22:48.705212512Z",
