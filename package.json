@@ -1,6 +1,6 @@
 {
   "name": "cotter-token-js",
-  "version": "0.1.2",
+  "version": "0.1.3-beta.0",
   "description": "Cotter Tokens and JWT Handler for validating Cotter's responses and validating JWT tokens",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
