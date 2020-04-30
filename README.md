@@ -19,7 +19,7 @@ yarn add cotter-token-js
 To decode a jwt token:
 
 ```javascript
-import { CotterJwtToken } from "cotter-jwt-js";
+import { CotterJwtToken } from "cotter-token-js";
 
 const decodedToken = new CotterJwtToken(token);
 
@@ -52,7 +52,7 @@ This access token should be passed to your backend server, and used to authorize
 To decode a the access token:
 
 ```javascript
-import { CotterAccessToken } from "cotter-jwt-js";
+import { CotterAccessToken } from "cotter-token-js";
 
 const decodedToken = new CotterAccessToken(accessToken);
 
@@ -90,7 +90,7 @@ The ID token is following [OpenID specifications](https://openid.net/specs/openi
 To decode a the id token:
 
 ```javascript
-import { CotterIDToken } from "cotter-jwt-js";
+import { CotterIDToken } from "cotter-token-js";
 
 const decodedToken = new CotterIDToken(accessToken);
 
