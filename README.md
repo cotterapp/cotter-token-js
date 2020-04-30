@@ -353,7 +353,7 @@ After authenticating a user using Trusted Device or Pin/Biometric, you receive a
   "UpdatedAt": "2020-02-27T22:22:48.705212512Z",
   "DeletedAt": null,
   "client_user_id": "1014", // your client's User ID
-  "issuer": "afcabd98-745f-4b9e-98de-af968d9951d3", // your API Key
+  "issuer": "<YOUR API KEY ID>", // your API Key
   "event": "<EVENT NAME>",// requested event (LOGIN, or TRANSACTION, etc)
   "ip": "192.168.232.2", 
   "location": "Unknown",
