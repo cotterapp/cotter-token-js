@@ -1,15 +1,12 @@
 import * as axios from "axios";
 import jwkToPem from "jwk-to-pem";
 import * as jsonwebtoken from "jsonwebtoken";
+import jwkToBuffer from "jwk-to-pem";
 
 const jwksPath = "/token/jwks";
 const jwtAlgo = "ES256";
 
-interface PublicKey {
-  kty: string;
-  crv: string;
-  x: string;
-  y: string;
+interface PublicKey extends jwkToBuffer.ECPrivate {
   kid: string;
   use: string;
 }
@@ -45,12 +42,12 @@ const getPublicKeys = async (
   }
 };
 
-const ValidateToken = (
+const ValidateJwt = async (
   cotterBaseURL: string,
   jwtKid: string,
   token: string
-): boolean => {
-  const jwtKeys = getPublicKeys(cotterBaseURL);
+): Promise<boolean> => {
+  const jwtKeys = await getPublicKeys(cotterBaseURL);
   const pubKey = jwtKeys[jwtKid];
 
   let errResp: any | undefined;
@@ -66,4 +63,4 @@ const ValidateToken = (
   return true;
 };
 
-export default ValidateToken;
+export default ValidateJwt;
