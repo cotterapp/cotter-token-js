@@ -4,7 +4,7 @@ import CotterJwtToken from "./CotterJwtToken";
 export interface CotterIDTokenInterface extends StandardClaims {
   client_user_id: string;
   auth_time: string;
-  identifiers: string[];
+  identifier: string;
   type: string;
 }
 
@@ -24,8 +24,12 @@ export default class CotterIDToken extends CotterJwtToken {
     return this.payload.auth_time;
   }
 
-  getIdentifiers(): string[] {
-    return this.payload.identifiers;
+  getIdentifier(): string {
+    return this.payload.identifier;
+  }
+
+  getID(): string {
+    return this.payload.sub;
   }
 
   getClientUserID(): string {
