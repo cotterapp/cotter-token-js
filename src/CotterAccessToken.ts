@@ -28,6 +28,10 @@ export default class CotterAccessToken extends CotterJwtToken {
     return this.payload.scope;
   }
 
+  getID(): string {
+    return this.payload.sub;
+  }
+
   getClientUserID(): string {
     return this.payload.client_user_id;
   }
