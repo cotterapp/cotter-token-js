@@ -64,20 +64,28 @@ console.log(decodedToken.token); // original token string
 `CotterAccessToken` have the following attributes
 
 ```typescript
-interface CotterAccessTokenInterface {
-  client_user_id: string;
-  authentication_method: string;
-  type: string;
-  scope: string;
+class CotterAccessToken {
+  token: string; // This is the original token string
+  payload: {
+    client_user_id: string;
+    authentication_method: string;
+    type: string;
+    scope: string;
 
-  // standard claims
-  aud: string;
-  exp: number;
-  jti: string;
-  iat: number;
-  iss: string;
-  nbf: number;
-  sub: string;
+    // standard claims
+    aud: string;
+    exp: number;
+    jti: string;
+    iat: number;
+    iss: string;
+    nbf: number;
+    sub: string; // Cotter User ID
+  }
+  
+  getAuthMethod(): string   // Get Authentication method (OTP/MAGIC_LINK/TRUSTED_DEVICE/WEBAUTHN)
+  getScope(): string        // Get Scope
+  getID(): string           // Get Cotter User ID
+  getClientUserID(): string // DEPRECATED: Get client_user_id
 }
 ```
 
@@ -102,20 +110,28 @@ console.log(decodedToken.token); // original token string
 `CotterIDToken` have the following attributes
 
 ```typescript
-interface CotterIDTokenInterface {
-  client_user_id: string; // user id from your server
-  auth_time: string; // last authentication time
-  identifiers: string[]; // email/phone number
-  type: string;
-
-  // standard claims
-  aud: string;
-  exp: number;
-  jti: string;
-  iat: number;
-  iss: string;
-  nbf: number;
-  sub: string;
+class CotterIDToken {
+  token: string; // This is the original token string
+  payload: {
+    client_user_id: string;
+    auth_time: string;      // authentication time
+    identifier: string;     // User's email/phone/username
+    type: string;           // EMAIL or PHONE
+    
+    // standard claims
+    aud: string;
+    exp: number;
+    jti: string;
+    iat: number;
+    iss: string;
+    nbf: number;
+    sub: string; // Cotter User ID
+  }
+  
+  getAuthTime(): string     // Get authentication time
+  getIdentifier(): string   // Get user's identifier (email/phone/username)
+  getID(): string           // Get Cotter User ID
+  getClientUserID(): string // DEPRECATED: Get client_user_id
 }
 ```
 
@@ -173,89 +189,6 @@ When using these endpoints, you'll get **an additional field called `oauth_token
 }
 ```
 
-# Request Token Explicitly
-
-You can also request access tokens separately by passing in an `identity_token` or an `event_token` using these endpoints
-
-## Get Token using Identity Token
-
-When you receive an Identity Token from [Cotter's Email/Phone Number Verification SDK](https://docs.cotter.app/verify-email-and-phone-number/javascript-sdk-for-websites), you can pass it to this endpoint to receive an access token.
-
-```json
-POST /token
-Content-Type: application/json
-API_KEY_ID: <API-KEY-ID>
-
-{
-  "grant_type": "identity_token",
-  "identity_token": {
-    "identifier_id": "abcdabcd-abcd-abcd-abcd-abcdabcdabcd",
-    "timestamp": "1585988231",
-    "identifier": "hello@cotter.app",
-    "identifier_type": "EMAIL",
-    "receiver": "12341234-1234-1234-1234-123412341234",
-    "expire_at": "1588580231",
-    "signature": "BiyuaWwk2PVsNt0J3...
-  }
-}
-```
-
-### Response
-
-```json
-{
-  "access_token": "eyJhbGciOiJFUzI1sInR5cC...",
-  "auth_method": "OTP",
-  "expires_in": 3600,
-  "id_token": "eyJhbGciOiJFUz...",
-  "refresh_token": "60:79hbLxl3aTjWWgCcIRnn...",
-  "token_type": "Bearer"
-}
-```
-
-## Get Token using Event Token
-
-When you receive an Event Token from [Cotter's Trusted Device or PIN/Biometric SDK](https://docs.cotter.app/trusted-devices/react-native-sdk), you can pass it to this endpoint to receive an access token.
-
-```json
-POST /token
-Content-Type: application/json
-API_KEY_ID: <API-KEY-ID>
-
-
-{
-  "grant_type": "event_token",
-  "event_token": {
-    "CreatedAt": "2020-04-05T02:24:05.939179-07:00",
-    "DeletedAt": null,
-    "ID": 462,
-    "UpdatedAt": "2020-04-05T02:24:05.939179-07:00",
-    "approved": true,
-    "client_user_id": "xyzABC1234",
-    "event": "LOGIN",
-    "ip": "73.15.208.6",
-    "issuer": "12341234-1234-1234-1234-123412341234",
-    "location": "Orinda",
-    "method": "TRUSTED_DEVICE",
-    "new": false,
-    "signature": "XeKPx6HoZeKCTzdbLorE...",
-    "timestamp": "1586078645"
-  }
-}
-```
-
-### Response
-
-```json
-{
-  "access_token": "eyJhbGciOiJFUzI1sInR5cC...",
-  "auth_method": "TRUSTED_DEVICE",
-  "expires_in": 3600,
-  "id_token": "eyJhbGciOiJFUz...",
-  "refresh_token": "60:79hbLxl3aTjWWgCcIRnn...",
-  "token_type": "Bearer"
-}
-```
 
 ## Get Token using Refresh Token
 
@@ -288,6 +221,19 @@ Note that you **don't get a refresh token back**.
 ```
 
 # Validating JWT Token
+To validate the access or identity token, you can use Cotter's package [`cotter-node`](https://github.com/cotterapp/cotter-node-js)
+
+```javascript
+import { CotterValidateJWT } from "cotter-node";
+
+try {
+  var valid = await CotterValidateJWT(token);
+} catch (e) {
+  console.log(e);
+}
+```
+
+### If you can't use the package above
 
 To validate the jwt token, you need Cotter's JWT Public Key. The Public Key is specified in this endpoint:
 
@@ -321,55 +267,3 @@ const validateToken = async (token) => {
 validateToken(accessToken); // 👈 pass in access token here
 ```
 
-# Validating Cotter's Identity Response
-After verifying user's email or phone number, you receive a [response about the user's identity](https://docs.cotter.app/verify-email-and-phone-number/validating-cotters-token):
-```javascript
-"token": {
-    "identifier_id": "e8a47aff-f520-4b8d-952b-79d36d10fb3e",
-    "expire_at": "1588849208",
-    "identifier": "+12345678910", // user's email or phone
-    "identifier_type": "PHONE",
-    "receiver": "<YOUR API KEY ID>",
-    "signature": "21P6mXSF2x357kZGkEMQTRTn3r...",
-    "timestamp": "1586257208" // unix Timestamp
- }
-```
-
-### To validate the response:
-
-```javascript
-var cotter = require("cotter-token-js");
-
-var cotterIdentity = new cotter.CotterIdentity(token);
-var valid = cotterIdentity.validate()
-```
-
-# Validating Cotter's Event Response
-After authenticating a user using Trusted Device or Pin/Biometric, you receive a [response about the authentication event](https://docs.cotter.app/trusted-devices/validating-cotters-event-response):
-```javascript
-{
-  "ID": 1361, // Event ID
-  "CreatedAt": "2020-02-27T22:22:48.705212512Z",
-  "UpdatedAt": "2020-02-27T22:22:48.705212512Z",
-  "DeletedAt": null,
-  "client_user_id": "1014", // your client's User ID
-  "issuer": "<YOUR API KEY ID>", // your API Key
-  "event": "<EVENT NAME>",// requested event (LOGIN, or TRANSACTION, etc)
-  "ip": "192.168.232.2", 
-  "location": "Unknown",
-  "timestamp": "1582842167",
-  "method": "TRUSTED_DEVICE", // auth method: TRUSTED_DEVICE (other choices are PIN / BIOMETRIC)
-  "new": false, // Is this a new pending event. More explanation below about Non-Trusted Device
-  "approved": true, // Is this event approved.
-  "signature": "oonMGCAxp3..." // Signature to make sure this event comes from Cotter's server
-}
-```
-
-### To validate the response:
-
-```javascript
-var cotter = require("cotter-token-js");
-
-var cotterEvent = new cotter.CotterEvent(response);
-var valid = cotterEvent.validate()
-```
