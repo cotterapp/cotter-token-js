@@ -6,6 +6,7 @@ export interface CotterAccessTokenInterface extends StandardClaims {
   authentication_method: string;
   type: string;
   scope: string;
+  identifier: string;
 }
 
 export default class CotterAccessToken extends CotterJwtToken {
@@ -30,6 +31,10 @@ export default class CotterAccessToken extends CotterJwtToken {
 
   getID(): string {
     return this.payload.sub;
+  }
+
+  getIdentifier(): string {
+    return this.payload.identifier;
   }
 
   getClientUserID(): string {
