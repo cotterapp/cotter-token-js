@@ -3,6 +3,5 @@ export default interface StandardClaims {
   exp: number;
   iat: number;
   iss: string;
-  nbf: number;
   sub: string;
 }
