@@ -116,7 +116,7 @@ class CotterIDToken {
     client_user_id: string;
     auth_time: string;      // authentication time
     identifier: string;     // User's email/phone/username
-    type: string;           // EMAIL or PHONE
+    type: string;           
     
     // standard claims
     aud: string;
