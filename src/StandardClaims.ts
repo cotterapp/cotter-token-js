@@ -4,4 +4,5 @@ export default interface StandardClaims {
   iat: number;
   iss: string;
   sub: string;
+  jti: string;
 }
