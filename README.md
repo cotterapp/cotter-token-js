@@ -71,6 +71,7 @@ class CotterAccessToken {
     authentication_method: string;
     type: string;
     scope: string;
+    identifier: string;
 
     // standard claims
     aud: string;
@@ -85,6 +86,7 @@ class CotterAccessToken {
   getAuthMethod(): string   // Get Authentication method (OTP/MAGIC_LINK/TRUSTED_DEVICE/WEBAUTHN)
   getScope(): string        // Get Scope
   getID(): string           // Get Cotter User ID
+  getIdentifier(): string   // Get user's identifier (email/phone/username)
   getClientUserID(): string // DEPRECATED: Get client_user_id
 }
 ```
