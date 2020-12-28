@@ -1,6 +1,6 @@
 {
   "name": "cotter-token-js",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Cotter Tokens and JWT Handler for validating Cotter's responses and validating JWT tokens",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -23,7 +23,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "buffer": "^5.6.0",
     "jwk-to-pem": "^2.0.3",
     "tweetnacl": "^1.0.3"
